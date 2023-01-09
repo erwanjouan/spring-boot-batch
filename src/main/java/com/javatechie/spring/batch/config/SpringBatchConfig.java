@@ -2,12 +2,13 @@ package com.javatechie.spring.batch.config;
 
 import com.javatechie.spring.batch.entity.Customer;
 import com.javatechie.spring.batch.repository.CustomerRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
@@ -19,18 +20,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.orm.jpa.JpaTransactionManager;
 
 @Configuration
 @EnableBatchProcessing
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SpringBatchConfig {
 
-    private JobBuilderFactory jobBuilderFactory;
+    private final CustomerRepository customerRepository;
 
-    private StepBuilderFactory stepBuilderFactory;
-
-    private CustomerRepository customerRepository;
-
+    private final JobRepository jobRepository;
 
     @Bean
     public FlatFileItemReader<Customer> reader() {
@@ -56,7 +55,6 @@ public class SpringBatchConfig {
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
         return lineMapper;
-
     }
 
     @Bean
@@ -73,8 +71,9 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Step step1() {
-        return stepBuilderFactory.get("csv-step").<Customer, Customer>chunk(10)
+    public Step stepCsvToTable(JpaTransactionManager transactionManager) {
+        return new StepBuilder("csv-step", jobRepository)
+                .<Customer, Customer>chunk(10, transactionManager)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())
@@ -83,10 +82,11 @@ public class SpringBatchConfig {
     }
 
     @Bean
-    public Job runJob() {
-        return jobBuilderFactory.get("importCustomers")
-                .flow(step1()).end().build();
-
+    public Job jobCsvToTable(Step stepCsvToTable) {
+        return new JobBuilder("importCustomers", jobRepository)
+                .flow(stepCsvToTable)
+                .end()
+                .build();
     }
 
     @Bean
@@ -95,5 +95,4 @@ public class SpringBatchConfig {
         asyncTaskExecutor.setConcurrencyLimit(10);
         return asyncTaskExecutor;
     }
-
 }
