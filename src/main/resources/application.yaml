@@ -1,0 +1,15 @@
+app:
+  name: spring-batch-bug-reproducer
+spring:
+  main:
+    web-application-type: none
+  jpa:
+    hibernate:
+      ddl-auto: update
+  application:
+    name: ${app.name}
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: true

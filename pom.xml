@@ -8,13 +8,13 @@
 		<version>2.6.7</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ru.vkabanov</groupId>
-	<artifactId>spring-batch-bug-reproducer</artifactId>
+	<groupId>the.atomcity</groupId>
+	<artifactId>spring-boot-batch</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-batch-bug-reproducer</name>
-	<description>Project for Spring Batch Bug Reproducer</description>
+	<description>Project for Spring Boot Batch exploration</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -47,6 +47,11 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
