@@ -1,0 +1,15 @@
+app:
+  name: spring-batch-bug-reproducer
+spring:
+  application:
+    name: ${app.name}
+  datasource:
+    url: jdbc:postgresql://localhost:15432/batch_example_db?prepareThreshold=0
+    username: batch_example_adm
+    password: batch_example_pass
+    driverClassName: org.postgresql.Driver
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false

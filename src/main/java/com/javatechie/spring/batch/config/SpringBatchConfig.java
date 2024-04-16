@@ -56,7 +56,6 @@ public class SpringBatchConfig {
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
         return lineMapper;
-
     }
 
     @Bean
@@ -95,5 +94,4 @@ public class SpringBatchConfig {
         asyncTaskExecutor.setConcurrencyLimit(10);
         return asyncTaskExecutor;
     }
-
 }
