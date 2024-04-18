@@ -1,20 +1,21 @@
 - name: Add Spring Boot Batch Helm repo
   kubernetes.core.helm_repository:
-      name: github
+      name: '{{ batch.helm.repo.name }}'
+      repo_state: present
       force_update: true
-      repo_url: https://raw.githubusercontent.com/erwanjouan/spring-boot-batch/gh-pages/
+      repo_url: '{{ batch.helm.repo.url }}'
 
 - name: Install Spring Boot Batch Chart
   kubernetes.core.helm:
       name: github
       namespace: '{{ namespace }}'
-      chart_ref: github/spring-batch-job
-      chart_version: 0.1.7
+      chart_ref: '{{ batch.helm.repo.name }}/{{ batch.helm.chart.name }}'
+      chart_version: '{{ batch.helm.chart.version }}'
       wait: true
       values:
         jobVersion: '{{ ansible_date_time.epoch }}'
         image:
-          tag: d34a5cef1f1f837841882864a14482835936117b
+          tag: '{{ batch.image.tag }}'
         postgresql:
           serviceName: '{{ postgresql.service_name }}'
           port: '{{ postgresql.port }}'

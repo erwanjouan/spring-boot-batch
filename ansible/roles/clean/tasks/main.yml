@@ -4,3 +4,6 @@
 - name: cluster
   include_tasks: cluster.yml
   when: environment_type == 'remote'
+
+- name: helm
+  include_tasks: helm.yml
