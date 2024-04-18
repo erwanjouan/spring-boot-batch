@@ -52,7 +52,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            docker.io/rone56/spring-boot-batch:${{ env.CHART_VERSION }}
+            docker.io/rone56/spring-boot-batch:${{ env.GITHUB_SHA }}
 
       - name: Install Helm
         uses: azure/setup-helm@v3
