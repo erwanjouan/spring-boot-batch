@@ -1,0 +1,4 @@
+namespace: batch
+postgresql:
+  port: 5432
+  service_name: my-postgresql

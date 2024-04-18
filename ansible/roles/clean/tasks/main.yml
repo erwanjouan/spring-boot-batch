@@ -1,0 +1,6 @@
+- name: namespace
+  include_tasks: namespace.yml
+
+- name: cluster
+  include_tasks: cluster.yml
+  when: environment_type == 'remote'

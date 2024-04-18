@@ -1,0 +1,15 @@
+# Kind cluster creation
+
+- name: Print environment_type
+  debug:
+    msg: "environment_type: {{ environment_type }}"
+
+- name: Create kind cluster
+  shell: "kind create cluster --name {{ namespace }}"
+  ignore_errors: yes
+  when: environment_type == 'remote'
+
+- name: Cluster creation has been finished
+  debug:
+    msg: "Cluster creation of kind cluster {{ namespace }} has been finished."
+  when: environment_type == 'remote'

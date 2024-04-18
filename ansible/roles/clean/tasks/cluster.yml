@@ -1,0 +1,4 @@
+- name: Delete kind cluster
+  shell: "kind delete cluster --name {{ namespace }}"
+  ignore_errors: yes
+  when: environment_type == 'remote'
