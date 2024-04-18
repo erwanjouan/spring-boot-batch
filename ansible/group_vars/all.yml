@@ -2,3 +2,6 @@ namespace: batch
 postgresql:
   port: 5432
   service_name: my-postgresql
+  database: batch_example_db
+  username: batch_example_adm
+  password: batch_example_pass
