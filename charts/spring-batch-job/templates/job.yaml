@@ -17,12 +17,6 @@ spec:
             - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://{{ .Values.postgresql.serviceName }}:{{ .Values.postgresql.port }}/{{ .Values.postgresql.dbName }}?prepareThreshold=0
             - name: SPRING_DATASOURCE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: db.username
+              value: {{ .Values.postgresql.dbUser }}
             - name: SPRING_DATASOURCE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-secret
-                  key: db.password
+              value: {{ .Values.postgresql.dbPassword }}
