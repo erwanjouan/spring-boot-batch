@@ -1,9 +1,11 @@
-name: Release Charts
+name: Build and push to DockerHub
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'src/**'
 
 jobs:
   release:
@@ -60,11 +62,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USER }}/spring-boot-batch:latest
             ${{ secrets.DOCKERHUB_USER }}/spring-boot-batch:${{ steps.prep.outputs.IMAGE_TAG }}
-
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-
-      - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.6.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

@@ -1,7 +1,8 @@
 appName: spring-boot-batch
+
 image:
   name: rone56/spring-boot-batch
-  tag: latest
+
 postgresql:
   port: 5432
   serviceName: my-postgresql
