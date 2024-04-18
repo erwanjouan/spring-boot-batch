@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://my-postgresql:5432/batch_example_db?prepareThreshold=0
-    username: batch_example_adm
-    password: batch_example_pass
-    driverClassName: org.postgresql.Driver

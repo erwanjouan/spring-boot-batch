@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.appName }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: {{ .Values.appName }}
+          image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+          imagePullPolicy: Never
+          args: [ "fileName=$FILE_NAME" ]
+          env:
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: org.postgresql.Driver
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://{{ .Values.postgresql.serviceName }}:{{ .Values.postgresql.port }}/{{ .Values.postgresql.dbName }}?prepareThreshold=0
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db.username
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: db.password
