@@ -3,6 +3,16 @@ entries:
   spring-batch-job:
   - apiVersion: v2
     appVersion: b3065fb96ab11cafc85b213160a18a27cfbb6ffc
+    created: "2024-04-18T16:45:24.43137351Z"
+    description: A Helm chart for Kubernetes
+    digest: 0cc391b1113e2012190f0f1ca689e9009f9fc538643d84757ca7995b2ed8d766
+    name: spring-batch-job
+    type: application
+    urls:
+    - https://github.com/erwanjouan/spring-boot-batch/releases/download/spring-batch-job-0.1.6/spring-batch-job-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: b3065fb96ab11cafc85b213160a18a27cfbb6ffc
     created: "2024-04-18T16:42:34.473081445Z"
     description: A Helm chart for Kubernetes
     digest: 47e32c0bc0daffc79dd57a778ecbbc7f191674f8d6a313883067b7e783eaa045
@@ -61,4 +71,4 @@ entries:
     urls:
     - https://github.com/erwanjouan/spring-boot-batch/releases/download/spring-batch-job-0.1.0/spring-batch-job-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-18T16:42:34.473108405Z"
+generated: "2024-04-18T16:45:24.431396964Z"
