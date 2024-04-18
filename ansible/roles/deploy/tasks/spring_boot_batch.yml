@@ -9,14 +9,12 @@
       name: github
       namespace: '{{ namespace }}'
       chart_ref: github/spring-batch-job
-      chart_version: 0.1.6
+      chart_version: 0.1.7
       wait: true
       values:
         jobVersion: '{{ ansible_date_time.epoch }}'
         image:
-          name: rone56/spring-boot-batch
           tag: d34a5cef1f1f837841882864a14482835936117b
-
         postgresql:
           serviceName: '{{ postgresql.service_name }}'
           port: '{{ postgresql.port }}'

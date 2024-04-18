@@ -2,7 +2,7 @@ appName: spring-boot-batch
 jobVersion: 0
 
 image:
-  name: yolo
+  name: rone56/spring-boot-batch
   tag: yolo
 
 postgresql:
