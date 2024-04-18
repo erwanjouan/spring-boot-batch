@@ -8,7 +8,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: {{ .Values.appName }}
-          image: {{ .Values.image.name }}:{{ .Chart.appVersion }}
+          image: {{ .Values.image.name }}:{{ .Chart.AppVersion }}
           imagePullPolicy: Never
           args: [ "fileName=$FILE_NAME" ]
           env:

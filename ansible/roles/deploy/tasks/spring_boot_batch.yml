@@ -1,11 +1,11 @@
 - name: Add Spring Boot Batch Helm repo
   kubernetes.core.helm_repository:
-      name: spring-boot-batch
+      name: github
       repo_url: https://raw.githubusercontent.com/erwanjouan/spring-boot-batch/gh-pages/
 
 - name: Install Spring Boot Batch Chart
   kubernetes.core.helm:
-      name: spring-boot-batch
+      name: github
       namespace: '{{ namespace }}'
-      chart_ref: spring-boot-batch
+      chart_ref: github/spring-batch-job
       wait: true
