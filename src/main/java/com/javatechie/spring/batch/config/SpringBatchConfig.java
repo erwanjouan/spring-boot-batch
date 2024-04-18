@@ -16,14 +16,18 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+
+import java.net.MalformedURLException;
 
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
 public class SpringBatchConfig {
+
+    public static final String SOURCE_FILE_URL = "https://raw.githubusercontent.com/erwanjouan/spring-boot-batch/main/src/main/resources/customers.csv";
 
     private JobBuilderFactory jobBuilderFactory;
 
@@ -35,7 +39,13 @@ public class SpringBatchConfig {
     @Bean
     public FlatFileItemReader<Customer> reader() {
         FlatFileItemReader<Customer> itemReader = new FlatFileItemReader<>();
-        itemReader.setResource(new FileSystemResource("src/main/resources/customers.csv"));
+        UrlResource urlResource;
+        try {
+            urlResource = new UrlResource(SOURCE_FILE_URL);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        itemReader.setResource(urlResource);
         itemReader.setName("csvReader");
         itemReader.setLinesToSkip(1);
         itemReader.setLineMapper(lineMapper());
