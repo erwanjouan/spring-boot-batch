@@ -9,7 +9,7 @@ spec:
       containers:
         - name: {{ .Values.appName }}
           image: {{ .Values.image.name }}:{{ .Chart.AppVersion }}
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           args: [ "fileName=$FILE_NAME" ]
           env:
             - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
