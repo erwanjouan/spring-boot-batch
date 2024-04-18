@@ -2,7 +2,8 @@ appName: spring-boot-batch
 jobVersion: 0
 
 image:
-  name: rone56/spring-boot-batch
+  name: yolo
+  tag: yolo
 
 postgresql:
   port: 5432

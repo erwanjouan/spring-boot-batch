@@ -13,6 +13,10 @@
       wait: true
       values:
         jobVersion: '{{ ansible_date_time.epoch }}'
+        image:
+          name: rone56/spring-boot-batch
+          tag: d34a5cef1f1f837841882864a14482835936117b
+
         postgresql:
           serviceName: '{{ postgresql.service_name }}'
           port: '{{ postgresql.port }}'
