@@ -9,6 +9,7 @@
       name: github
       namespace: '{{ namespace }}'
       chart_ref: github/spring-batch-job
+      chart_version: 0.1.6
       wait: true
       values:
         jobVersion: '{{ ansible_date_time.epoch }}'
