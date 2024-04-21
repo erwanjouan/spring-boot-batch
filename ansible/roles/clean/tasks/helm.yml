@@ -1,9 +1,4 @@
 - name: Remove bitnami Helm repo
   kubernetes.core.helm_repository:
-    name: '{{ postgresql.helm.repo.name }}'
-    repo_state: absent
-
-- name: Remove Spring Boot Batch Helm repo
-  kubernetes.core.helm_repository:
-    name: '{{ batch.helm.repo.name }}'
+    name: '{{ bitnami.helm.repo.name }}'
     repo_state: absent

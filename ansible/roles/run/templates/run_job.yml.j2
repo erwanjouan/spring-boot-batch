@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: {{ namespace }}
+  name: {{ job_name }}
+spec:
+  template:
+    backoffLimit: 4
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: maven
+          image: maven:3.9.6-eclipse-temurin-17
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: mvn-settings
+              mountPath: "/root/.m2"
+            - name: maven-repo
+              mountPath: "/root/.m2repo"
+              readOnly: false
+          command: ["/bin/sh","-c"]
+          args:
+            - git clone https://github.com/erwanjouan/spring-boot-batch.git --depth 1;
+              cd spring-boot-batch && mvn spring-boot:run;
+          env:
+          - name: SPRING_DATASOURCE_URL
+            value: jdbc:postgresql://{{ postgresql.service_name }}:{{ postgresql.port }}/{{ postgresql.database }}?prepareThreshold=0
+          - name: SPRING_DATASOURCE_USERNAME
+            value: {{ postgresql.username }}
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: {{ postgresql.password }}
+          - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
+            value: {{ postgresql.driverClassName }}
+      volumes:
+      - name: mvn-settings
+        secret:
+          secretName: {{ maven.m2_settings_secret_name }}
+      - name: maven-repo
+        persistentVolumeClaim:
+          claimName: {{ maven.maven_repo_pvc }}

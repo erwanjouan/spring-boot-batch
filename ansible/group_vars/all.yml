@@ -1,21 +1,17 @@
 namespace: batch
 
-batch:
-  helm:
-    repo:
-      name: mygithub
-      url: https://raw.githubusercontent.com/erwanjouan/spring-boot-batch/gh-pages/
-    chart:
-        name: spring-batch-job
-        version: 0.1.8
-  image:
-    tag: d34a5cef1f1f837841882864a14482835936117b
-
-postgresql:
+bitnami:
   helm:
     repo:
       name: bitnami
       url: https://charts.bitnami.com/bitnami
+
+maven:
+  m2_settings_secret_name: m2-settings
+  maven_repo_pvc: maven-repo
+
+postgresql:
+  helm:
     chart:
       name: postgresql
   port: 5432

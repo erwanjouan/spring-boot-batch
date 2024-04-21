@@ -10,5 +10,5 @@
 - name: postgresql
   include_tasks: postgresql.yml
 
-- name: spring_boot_batch
-  include_tasks: spring_boot_batch.yml
+- name: maven
+  include_tasks: maven.yml

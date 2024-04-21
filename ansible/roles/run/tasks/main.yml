@@ -1,0 +1,26 @@
+- name: Setting host facts using key=value pairs, this format can only create strings or booleans
+  ansible.builtin.set_fact: job_name='run-job-{{ ansible_date_time.epoch }}'
+
+- name: Print Job name
+  debug:
+    msg: "{{ job_name }}"
+
+- name: Job
+  kubernetes.core.k8s:
+    state: present
+    template: run_job.yml.j2
+    wait: yes
+    wait_condition:
+      type: Complete
+      status: "True"
+
+- name: Log a Pod matching a label selector
+  kubernetes.core.k8s_log:
+    namespace: '{{ namespace }}'
+    tail_lines: 30
+    label_selectors:
+      - batch.kubernetes.io/job-name = {{ job_name }}
+  register: log
+
+- name: Print log
+  debug: var=log.log_lines

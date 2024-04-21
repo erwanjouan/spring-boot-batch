@@ -1,0 +1,36 @@
+# pvc for maven local repo .m2repo
+
+- name: Create a pvc for maven repo
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        namespace: '{{ namespace }}'
+        name: '{{ maven.maven_repo_pvc }}'
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+
+# .m2/settings.xml
+
+- name: Creating maven .m2/settings.xml
+  template:
+    src: settings.xml.j2
+    dest: settings.xml
+
+- name: Checks m2-settings secret exists
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: '{{ maven.m2_settings_secret_name }}'
+    namespace: '{{ namespace }}'
+  register: mvn_settings_exists
+
+- name: Create m2-settings secret
+  shell: 'kubectl create secret generic {{ maven.m2_settings_secret_name }} --from-file=settings.xml=./settings.xml --namespace {{ namespace }}'
+  when: mvn_settings_exists.resources | length == 0
