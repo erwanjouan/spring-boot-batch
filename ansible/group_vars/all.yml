@@ -1,5 +1,9 @@
 namespace: batch
 
+input:
+  mount_path: /tmp/input
+  filename: customers.csv
+
 bitnami:
   helm:
     repo:
@@ -16,6 +20,7 @@ postgresql:
       name: postgresql
   port: 5432
   service_name: my-postgresql
+  driver_class_name: org.postgresql.Driver
   database: batch_example_db
   username: batch_example_adm
   password: batch_example_pass

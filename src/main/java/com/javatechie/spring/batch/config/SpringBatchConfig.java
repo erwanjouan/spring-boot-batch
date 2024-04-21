@@ -16,18 +16,18 @@ import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 
-import java.net.MalformedURLException;
+import java.util.Optional;
 
 @Configuration
 @EnableBatchProcessing
 @AllArgsConstructor
 public class SpringBatchConfig {
 
-    public static final String SOURCE_FILE_URL = "https://raw.githubusercontent.com/erwanjouan/spring-boot-batch/main/src/main/resources/customers.csv";
+    public static final String DEFAULT_INPUT = "src/main/resources/customers.csv";
 
     private JobBuilderFactory jobBuilderFactory;
 
@@ -35,17 +35,12 @@ public class SpringBatchConfig {
 
     private CustomerRepository customerRepository;
 
-
     @Bean
     public FlatFileItemReader<Customer> reader() {
         FlatFileItemReader<Customer> itemReader = new FlatFileItemReader<>();
-        UrlResource urlResource;
-        try {
-            urlResource = new UrlResource(SOURCE_FILE_URL);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        itemReader.setResource(urlResource);
+        String inputPath = getInputPath();
+        FileSystemResource fileSystemResource = new FileSystemResource(inputPath);
+        itemReader.setResource(fileSystemResource);
         itemReader.setName("csvReader");
         itemReader.setLinesToSkip(1);
         itemReader.setLineMapper(lineMapper());
@@ -103,5 +98,10 @@ public class SpringBatchConfig {
         SimpleAsyncTaskExecutor asyncTaskExecutor = new SimpleAsyncTaskExecutor();
         asyncTaskExecutor.setConcurrencyLimit(10);
         return asyncTaskExecutor;
+    }
+
+    private String getInputPath(){
+        return Optional.ofNullable(System.getenv("INPUT_CSV_FILE"))
+                .orElse(DEFAULT_INPUT);
     }
 }

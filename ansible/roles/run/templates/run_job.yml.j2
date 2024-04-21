@@ -18,6 +18,8 @@ spec:
             - name: maven-repo
               mountPath: "/root/.m2repo"
               readOnly: false
+            - name: input
+              mountPath: {{ input.mount_path }}
           command: ["/bin/sh","-c"]
           args:
             - git clone https://github.com/erwanjouan/spring-boot-batch.git --depth 1;
@@ -30,7 +32,9 @@ spec:
           - name: SPRING_DATASOURCE_PASSWORD
             value: {{ postgresql.password }}
           - name: SPRING_DATASOURCE_DRIVER_CLASS_NAME
-            value: {{ postgresql.driverClassName }}
+            value: {{ postgresql.driver_class_name }}
+          - name: INPUT_CSV_FILE
+            value: {{ input.mount_path }}/{{ input.filename }}
       volumes:
       - name: mvn-settings
         secret:
@@ -38,3 +42,6 @@ spec:
       - name: maven-repo
         persistentVolumeClaim:
           claimName: {{ maven.maven_repo_pvc }}
+      - name: input
+        configMap:
+          name: {{ job_name }}

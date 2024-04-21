@@ -5,6 +5,15 @@
   debug:
     msg: "{{ job_name }}"
 
+- name: Creating customers.csv for configMap
+  template:
+    src: '{{ input.filename }}.j2'
+    dest: '{{ input.filename }}'
+
+- name: Create configMap
+  shell: >
+    kubectl create configmap {{ job_name }} -n {{ namespace }} --from-file={{ input.filename }}=./{{ input.filename }} 
+
 - name: Job
   kubernetes.core.k8s:
     state: present
@@ -22,5 +31,10 @@
       - batch.kubernetes.io/job-name = {{ job_name }}
   register: log
 
+- name: Delete configMap
+  shell: >
+    kubectl delete configmap {{ job_name }} -n {{ namespace }} 
+
 - name: Print log
   debug: var=log.log_lines
+
